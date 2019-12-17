@@ -13,20 +13,17 @@ class GlobalPos extends React.Component {
         this._service = new Service()
         this._apiService = new apiService()
         this.state = {
-            values: [],
-            showModalWindow: false,
-            prices: [],
-            portVal: null,
-            portValV: [],
+            // values: [],
+            // showModalWindow: false,
+            // prices: [],
+            // portVal: null,
+            // portValV: [],
 
 
             valuesN: []
         
         }
     }
-
-    componentDidMount = () => this.updateValuesList()
-
     updateValuesList = () => {
         this._service.getAllValues()
             .then(allValuesFromDB =>{
@@ -76,6 +73,12 @@ class GlobalPos extends React.Component {
     bpaCalc = () => {
         console.log(this.state.valuesN)
 
+        let portValue = this.state.valuesN.map(elm => elm.APIPrice*elm.BDQuantity).reduce((a, b) => a + b, 0)
+        let cash = this.state.valuesN.map(elm => elm.BDQuantity*elm.BDValue).reduce((a, b) => a + b, 0)
+
+        console.log(cash)
+
+
         // let copyValuesN = [...this.state.valuesN.map(elm => { return { ...elm } })]
 
         // let calcValues = copyValuesN.map(value => {
@@ -101,10 +104,13 @@ class GlobalPos extends React.Component {
 
     }
 
+    // componentDidMount = () => this.props.updateValuesList()
+
+    
 
 
-    handleShow = () => this.setState({ showModalWindow: true })
-    handleClose = () => this.setState({ showModalWindow: false })
+    // handleShow = () => this.setState({ showModalWindow: true })
+    // handleClose = () => this.setState({ showModalWindow: false })
 
 
         render () {
@@ -117,7 +123,7 @@ class GlobalPos extends React.Component {
                         </Col>
 
                         <Col className="table-index" md={2}>
-                        <Button variant="dark" onClick={this.handleShow}>Añadir posición</Button>
+                        {/* <Button variant="dark" onClick={this.handleShow}>Añadir posición</Button> */}
                         </Col>
                     </Row>    
                     <Row>
@@ -148,14 +154,14 @@ class GlobalPos extends React.Component {
                     </Row>
 
                     {/* open position */}
-                    <Modal show={this.state.showModalWindow} onHide={this.handleClose}>
+                    {/* <Modal show={this.state.showModalWindow} onHide={this.handleClose}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Añadir posición</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <ValueFormAdd setTheUser={this.props.setTheUser} closeModalWindow={this.handleClose} updateValuesList={this.updateValuesList}/>
+                                <ValueFormAdd setTheUser={this.props.setTheUser} closeModalWindow={this.handleClose} updateValuesList={this.props.updateValuesList}/>
                             </Modal.Body>
-                    </Modal>
+                    </Modal> */}
 
                 </Container>
         )

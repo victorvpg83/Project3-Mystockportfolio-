@@ -10,9 +10,9 @@ router.post('/new', (req, res) => {
     const value = req.body
 console.log(req.body)
 
-  Value.findOne({symbol: req.body.symbol})
-  .then(value => {
-    if(!value) {
+  // Value.findOne({symbol: req.body.symbol})
+  // .then(value => {
+  //   if(!value) {
       Value.create({
         symbol: req.body.symbol,
         qty: req.body.qty,
@@ -32,8 +32,8 @@ console.log(req.body)
          
         })
         .catch(err => console.log('DB error', err))
-    } else { alert('La posición ya esta tomada')}
-  })
+    // } else { console.log('La posición ya esta tomada')}
+  // })
 
 
 })

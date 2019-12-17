@@ -1,7 +1,8 @@
 import React from 'react'
-import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Table, Button, Modal } from 'react-bootstrap'
 import apiService from "../../service/Value_service"
 import Service from "../../service/ValueCreate_service"
+import ValueFormAdd from './ValueFormAdd'
 
 
 import ValueFormClose from './ValueFormClose'
@@ -18,24 +19,24 @@ class ValuePort extends React.Component {
         this.state = {
             values: [],
             showModalWindow: false,
-            showModalWindowCierre: false,
-            prices: [],
-            bpa: [],
-            bpv: [],
-            vc: undefined,
-            efect: undefined,
-            pct: undefined,
-            valorTotalCartera: undefined,
-            beneficioPerdidaCartera: undefined,
-            valorCartera: undefined,
+            showModalWindowQ: false,
+            // prices: [],
+            // bpa: [],
+            // bpv: [],
+            // vc: undefined,
+            // efect: undefined,
+            // pct: undefined,
+
             showValueFormClose: false,
              clickedValue: {},
+             clickedValueQ: {},
             valuesN: []
 
         }
     }
 
-    componentDidMount = () => this.updateValuesList()
+    componentDidMount = () =>  this.updateValuesList()
+  
 
     updateValuesList = () => {
         this._service.getAllValues()
@@ -108,19 +109,21 @@ class ValuePort extends React.Component {
 
     showValueFormClose = () => this.setState({showValueFormClose: true})
 
-
     handleShow = (value) => this.setState({ showModalWindow: true, clickedValue: value  })
+    handleShowQ = (value) => this.setState({ showModalWindowQ: true, clickedValueQ: value  })
    
     handleClose = () => this.setState({ showModalWindow: false, clickedValue: {}})
+    handleCloseQ = () => this.setState({ showModalWindowQ: false, clickedValueQ: {}})
 
 
     render() {
-        console.log(this.state.valuesN)
+        console.log(this.props)
 
         return (
             <Container>
 
-                <h2>Valores en cartera: </h2>
+                <h2>Valores en cartera: <Button variant="dark" onClick={this.handleShowQ}>Añadir posición</Button> </h2>
+                
                 <Row>
 
                     <Table striped bordered hover size="sm">
@@ -161,7 +164,7 @@ class ValuePort extends React.Component {
                                                             <Modal.Title>Cerrar posición</Modal.Title>
                                                         </Modal.Header>
                                                         <Modal.Body>
-                                                            <ValueFormClose setTheUser={this.props.setTheUser} value={this.state.clickedValue} closeModalWindow={this.handleClose} updateValuesList={this.updateValuesList} />
+                                                            <ValueFormClose setTheUser={this.props.setTheUser} value={this.state.clickedValue} closeModalWindow={this.handleClose} updateValuesList={this.props.updateValuesList} />
                                                         </Modal.Body>
                                                     </Modal>
 
@@ -174,6 +177,16 @@ class ValuePort extends React.Component {
                             
                         </tbody>
                     </Table>
+                    
+
+                    <Modal show={this.state.showModalWindowQ} onHide={this.handleCloseQ}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Añadir posición</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <ValueFormAdd setTheUser={this.props.setTheUser} closeModalWindowQ={this.handleCloseQ} updateValuesList={this.updateValuesList}/>
+                            </Modal.Body>
+                    </Modal>
 
                 </Row>
 

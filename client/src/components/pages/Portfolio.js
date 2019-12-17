@@ -18,22 +18,96 @@ class Portfolio extends React.Component {
         this.state = {
             values: [],
             showModalWindow: false,
-            showModalWindowCierre: false,
             prices: [],
-            bpa:[],
-            bpv: [],
-            vc :undefined,
-            efect: undefined,
-            pct:undefined,
-            valorTotalCartera: undefined,
-            beneficioPerdidaCartera: undefined,
-            valorCartera: undefined,
+            portVal: null,
+            portValV: [],
 
 
             valuesN: []
         
         }
     }
+
+    updateValuesList = () => {
+        this._service.getAllValues()
+            .then(allValuesFromDB =>{
+                console.log("SI QUE ENTRAAAAA", allValuesFromDB)
+                const copyValues = []
+                allValuesFromDB.data.cartera.forEach(value => {
+                    copyValues.push({
+                        BDValue: value.buyPrice,
+                        BDSymbol: value.symbol,
+                        BDQuantity: value.qty,
+                        APIPrice: null,
+
+                    })
+
+
+                })
+                console.log(copyValues)
+                 this.setState({ valuesN: copyValues
+                }, () => this.updatePrice(this.state.valuesN))
+            })
+            .catch(err => console.log("Error", err))
+    }
+
+    updatePrice = (array) =>{
+        console.log(array)
+        const copyArray = [...array.map(elm => {return {...elm}})]
+        const promisesArr = copyArray.map(elm => {
+
+            return this._apiService.getRealTime(elm.BDSymbol)
+            .then(Markets => {
+               elm.APIPrice = Markets.data.price
+              
+               return elm
+            } )
+            
+            .catch(err => console.log("Error", err))
+        })
+
+        Promise.all(promisesArr).then((res) => {
+            console.log(res, "respuesta promises")
+            this.setState({ valuesN: res }, () => this.bpaCalc())
+        }).catch(err => console.log(err))
+
+       
+
+    }
+    bpaCalc = () => {
+        console.log(this.state.valuesN)
+
+        let portValue = this.state.valuesN.map(elm => elm.APIPrice*elm.BDQuantity).reduce((a, b) => a + b, 0)
+        let cash = this.state.valuesN.map(elm => elm.BDQuantity*elm.BDValue).reduce((a, b) => a + b, 0)
+
+        console.log(cash)
+
+
+        // let copyValuesN = [...this.state.valuesN.map(elm => { return { ...elm } })]
+
+        // let calcValues = copyValuesN.map(value => {
+        //     let portValV= value.BDQuantity*value.APIPrice
+        //     let portVal = value.portValV.sort(a+b,0)
+        //     value.portValV= portValV
+        //     value.portVal = portVal 
+
+
+        //     let numberBpa = value.APIPrice - value.BDValue
+        //     let numberPlv = numberBpa * value.BDQuantity
+        //     value.bpa = numberBpa
+        //     value.plv = numberPlv
+        //     return value
+        // })
+        // console.log(calcValues)
+
+        // this.setState({
+        //     portVal : portVal,
+        //     portValV : portValV
+
+        // })
+
+    }
+
 
 
         render () {
@@ -42,21 +116,21 @@ class Portfolio extends React.Component {
                 <Container>
                     <Row>
                     <Col className="table-index" md={12}>
-                        <GlobalPos loggedInUser={this.props.loggedInUser} setTheUser={this.props.setTheUser}/>
+                        <GlobalPos loggedInUser={this.props.loggedInUser} setTheUser={this.props.setTheUser} updateValuesList={this.updateValuesList}/>
                         </Col>
                     </Row>
                     
                     <Row>
                     <Col className="table-index" md={12}>
                         <tr>
-                        <ValuePort/>
+                        <ValuePort setTheUser={this.props.setTheUser} valuesN={this.state.valuesN} />
                         </tr>
                         </Col>  
                     </Row>
 
                     <Row>
                         <Col className="table-index" md={12}>
-                            <RegOp/>
+                            <RegOp setTheUser={this.props.setTheUser}/>
                         </Col>
                     </Row>
                 </Container>
