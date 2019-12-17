@@ -8,16 +8,18 @@ const CloseValue = require('../models/CloseValue.model')
 
 router.post('/new', (req, res) => {
     const value = req.body
-// console.log(req)
+console.log(req.body)
 
-    Value.create({
+  Value.findOne({symbol: req.body.symbol})
+  .then(value => {
+    if(!value) {
+      Value.create({
         symbol: req.body.symbol,
         qty: req.body.qty,
         buyPrice: req.body.buyPrice
     })
         .then(theNewValue => {
 
-            console.log()
               User.findByIdAndUpdate(req.user._id, {
                 $addToSet: { cartera: theNewValue._id }
               }, {new:true})
@@ -27,30 +29,27 @@ router.post('/new', (req, res) => {
 
                 })
                 .catch(err => console.log(err));
-
-           
+         
         })
         .catch(err => console.log('DB error', err))
+    } else { alert('La posición ya esta tomada')}
+  })
+
+
 })
 
 router.get('/getAllValues', (req, res) => {
-  console.log("ENTRA")
     User.findById(req.user._id)
     .populate("cartera")
         .then(allValues =>{
-console.log(allValues)
           res.json(allValues)
         })
         .catch(err => console.log('DB error', err))
-        
-
-
 })
 
-//crear asiento en registro de operaciones
+//create value regOp
 router.post('/close', (req, res) => {
   const value = req.body
-// console.log(req)
 
   CloseValue.create({
       symbol: req.body.symbol,
@@ -61,24 +60,31 @@ router.post('/close', (req, res) => {
       bruto: req.body.bruto,
       neto: req.body.neto
   })
-      .then(theNewValue => {
+      .then(theCloseValue => {
 
-          console.log()
+        Value.findOneAndDelete({symbol: req.body.symbol})
+        .then(value => {
             User.findByIdAndUpdate(req.user._id, {
-              $addToSet: { cartera: theNewValue._id }
-            }, {new:true})
-              .then(user => {
-
-                res.json({theNewValue,user})
-
-              })
+              $addToSet: { registroOP: theCloseValue._id },
+              $pull: {cartera: value._id}}, {new:true})
+              .then(user => res.json({theCloseValue,user}))
               .catch(err => console.log(err));
-
-         
+        })
+  
       })
       .catch(err => console.log('DB error', err))
 })
 
+router.get('/getregop', (req, res) => {
+  // console.log("ENTRA")
+    User.findById(req.user._id)
+    .populate("registroOP")
+        .then(allCloseValues =>{
+// console.log(allValues)
+          res.json(allCloseValues)
+        })
+        .catch(err => console.log('DB error', err))
 
+})
 
 module.exports = router

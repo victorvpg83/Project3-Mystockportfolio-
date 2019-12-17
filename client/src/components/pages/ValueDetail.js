@@ -55,9 +55,7 @@ class ValueDetail extends React.Component  {
 
     handleInputChange = e => {
         let { value } = e.target
-        this.setState({
-            symbol: value
-        })
+        this.setState({symbol: value})
     }
 
 

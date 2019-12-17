@@ -1,9 +1,6 @@
- 
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
-
 import ValuesService from '../../service/ValueCreate_service'
-
 
 class ValueFormClose extends Component {
 
@@ -14,59 +11,60 @@ class ValueFormClose extends Component {
         this.state = {
             disabledButton: false,
             buttonText: 'Cerrar posición',
-            value: {
-                comision: undefined,
-                sellPrice: undefined
-            }
+            registroOP: {
+                sellPrice: "",      //viene del formulario
+                comision: "",       //viene del formulario  
+                symbol: this.props.value.BDSymbol, //viene de cartera
+                buyPrice: this.props.value.BDValue,       //viene de cartera
+                qty: this.props.value.BDQuantity,            //viene de cartera
+                bruto: undefined,          //hay que calcularlo
+                neto: undefined,           //hay que calcularlo
+            },
+            accion: {
+
+            }        
         }
+
     }
 
     handleSubmit = e => {
         e.preventDefault()
-        this._valuesService.postValue(this.state.value)
-            .then(x => {
 
+        this._valuesService.closeValue(this.state.registroOP)
+            .then(x => {
+// console.log(x.data)
                 this.props.closeModalWindow()
                 this.props.updateValuesList()
                 this.props.setTheUser(x.data.user)
             })
             .catch(err => console.log(err))
-    }
+        }
+        
+        handleInputChange = e => {
 
+            let { name, value } = e.target
 
-    handleInputChange = e => {
-        let { name, value } = e.target
-        this.setState({
-            value: { ...this.state.value, [name]: value }
-        })
-    }
+            this.setState(
+                {registroOP: { ...this.state.registroOP, [name]: value }
+            })
+          
+        }
+        render() {
+            console.log(this.props)
+            return (
+                <Form onSubmit={this.handleSubmit}>
 
-
-    render() {
-        return (
-            <Form onSubmit={this.handleSubmit}>
-                {/* <Form.Group>
-                    <Form.Label>Símbolo</Form.Label>
-                    <Form.Control type="text" name="symbol" onChange={this.handleInputChange} value={this.state.value.symbol} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Nº de acciones</Form.Label>
-                    <Form.Control type="number" name="qty" onChange={this.handleInputChange} value={this.state.value.qty} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Precio de compra</Form.Label>
-                    <Form.Control type="number" name="buyPrice" onChange={this.handleInputChange} value={this.state.value.buyPrice} />
-                </Form.Group> */}
                 <Form.Group>
                     <Form.Label>Precio de venta</Form.Label>
-                    <Form.Control type="number" name="sellPrice" onChange={this.handleInputChange} value={this.state.value.sellPrice} />
+                    <Form.Control type="number" name="sellPrice" onChange={this.handleInputChange} value={this.state.registroOP.sellPrice} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Comisión</Form.Label>
-                    <Form.Control type="number" name="comision" onChange={this.handleInputChange} value={this.state.value.comision} />
+                    <Form.Control type="number" name="comision" onChange={this.handleInputChange} value={this.state.registroOP.comision} />
                 </Form.Group>
 
                 <Button variant="dark" size="sm" type="submit">Cerrar posición</Button>
+
             </Form>
         )
     }

@@ -1,26 +1,16 @@
 import React from 'react'
-// import Col from 'react-bootstrap/Col'
-import { Col, Table} from 'react-bootstrap'
 
-import { Link } from 'react-router-dom'
-
-const ValueCardIndex = ({ ticker, changes, price, changesPercentage, companyName }) => {
+const ValueCardIndex = ({ ticker, price, changesPercentage }) => {
 
     return (
-        // <Col className="coaster-card" md={4}>
 <>
-
-            <tr>
-                <td>{ticker}</td>
-                <td>{price}</td>
-                <td>{changesPercentage}</td>
-            </tr>
-
-
-        {/* // </Col > */}
+    <tr>
+        <td>{ticker}</td>
+        <td>{price}</td>
+        <td>{changesPercentage}</td>
+    </tr>
 </>
     )
 }
-
 
 export default ValueCardIndex

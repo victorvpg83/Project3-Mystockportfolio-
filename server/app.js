@@ -14,5 +14,9 @@ app.use('/api/values', require('./routes/value.routes'))
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/files', require('./routes/files.routes'))
 
+app.use((req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+    });
+
 
 module.exports = app

@@ -1,9 +1,6 @@
- 
-import React, { Component } from 'react'
+ import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
-
 import ValuesService from '../../service/ValueCreate_service'
-
 
 class ValueFormAdd extends Component {
 
@@ -29,7 +26,8 @@ class ValueFormAdd extends Component {
 
                 this.props.closeModalWindow()
                 this.props.updateValuesList()
-                this.props.setTheUser(x.data.user)
+                .then(() => this.props.setTheUser(x.data.user))
+                
             })
             .catch(err => console.log(err))
     }

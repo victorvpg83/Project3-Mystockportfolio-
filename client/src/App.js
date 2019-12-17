@@ -3,10 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Service from './service/Auth_service'
 
-/* CUSTOM COASTER COMPONENTS */
-// import CoasterList from "./components/coasters/Coaster-list"
-// import CoasterDetails from "./components/coasters/Coaster-details"
-// import CoasterForm from './components/coasters/Coaster-form'
 
 /* CUSTOM UI COMPONENTS */
 import Navbar from './components/ui/Navbar.js'
@@ -61,12 +57,20 @@ console.log(this.state.loggedInUser)
 
         <Switch>
           <Route exact path="/" component={Index} />
-          {/* <Route exact path="/coasters" render={() => <CoasterList loggedInUser={this.state.loggedInUser} />} />
-          <Route path="/coasters/:id" component={CoasterDetails} />
-          <Route path="/form" component={CoasterForm} /> */}
 
           <Route path="/signup" render={match => <Signup setUser={this.setTheUser} {...match} />} />
           <Route path="/login" render={match => <Login setUser={this.setTheUser} {...match} />} />
+          {/* <Route path="/profile" 
+           render={match =>
+            this.state.loggedInUser == null ? (
+              <Redirect to="/" />
+            ) : this.state.loggedInUser || {} ? (
+              <Profile loggedInUser={this.state.loggedInUser} />
+            ) : (
+              <Redirect to="/" />
+            )
+          }
+          /> */}
           <Route path="/profile" render={() =>
             this.state.loggedInUser ? <Profile loggedInUser={this.state.loggedInUser} /> : <Redirect to="/" />
           } />

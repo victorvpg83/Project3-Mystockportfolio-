@@ -9,15 +9,11 @@ export default class Services {
         })
     }
 
-    // getOneCoaster = id => this._service.get(`/${id}`)
+    getOneValue = id => this._service.get(`/${id}`)
     getAllValues = () => this._service.get('/getAllValues')
-    postValue = value => {
-        console.log(value)
-       return this._service.post('/new', value)
-    }
+    postValue = value => this._service.post('/new', value)
+    
     //cerrar posición y añadir al registro de operacines
-    closeValue = value => {
-        console.log(value)
-       return this._service.post('/close', value)
-    }
+    closeValue = value => this._service.post('/close', value)
+    getRegOp = () => this._service.get('/getregop')
 }
