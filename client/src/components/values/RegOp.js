@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Table, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Table, Modal, Button } from 'react-bootstrap'
 import apiService from "../../service/Value_service"
 import DBService from "../../service/ValueCreate_service"
 
@@ -18,25 +18,25 @@ class RegOp extends React.Component {
         }
     }
 
-    // componentDidMount = () => this.updateCloseList()
+    componentDidMount = () => this.updateCloseList()
 
-    // updateCloseList = () => {
-    //     this._dbservice.getRegOp()
-    //         .then(regOpDB =>{
-    //             console.log(regOpDB)
-    //              this.setState({ 
-    //                  regOp: regOpDB.data
-    //             }, () => this.updatePrice(this.state.regOp.closevalues))
-    //         })
-    //         .catch(err => console.log("Error", err))
-    // }
+    updateCloseList = () => {
+        this._dbservice.getRegOp()
+            .then(regOpDB =>{
+                console.log(regOpDB)
+                //  this.setState({ 
+                //      regOp: regOpDB.data
+                // }, () => this.updatePrice(this.state.regOp.closevalues))
+            })
+            .catch(err => console.log("Error", err))
+    }
 
     handleShow = () => this.setState({ showModalWindow: true })
     handleClose = () => this.setState({ showModalWindow: false })
 
 
         render () {
-
+            console.log(this.props.ROp)
             return (
                 <Container>
                     
@@ -55,30 +55,38 @@ class RegOp extends React.Component {
                                     <th>B/P Neto</th>
                                   </tr>
                                 </thead>
-                                 <tbody>
-                                     <tr>
-                                         <td>AAPL</td>
-                                         <td>Apple</td>
-                                         <td>2200</td>
-                                         <td>10254</td>
-                                         <td>254</td>
-                                         <td>254</td>
-                                     </tr>
+                                <tbody>
+                        
+
+                        {this.props.ROp ?
+                            this.props.ROp.map(prices => {
+
+                                
+
+                                    return (
+                                        <>
+                                            <tr>
+                                            <td>{prices.symbol}</td>
+                                            <td>{prices.qty}</td>
+                                            <td>{prices.buyPrice}</td>
+                                            <td>{prices.sellPrice}</td>
+                                            <td>{prices.comision}</td>
+                                            <td></td>
+                                            <td></td>
+                                            </tr>
+                                
+
+                                        </>
+                                    )
+                            
+                            }) :
+                            null}
                     
-                                  </tbody>
+                </tbody>
                             </Table>
                         </Col>
                     </Row>
 
-                    {/* Close Position */}
-                    <Modal show={this.state.showModalWindow} onHide={this.handleClose}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Cerrar posición</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <ValueFormClose setTheUser={this.props.setTheUser} closeModalWindow={this.handleClose} updateValuesList={this.updateValuesList}/>
-                            </Modal.Body>
-                    </Modal>
 
                 </Container>
         )

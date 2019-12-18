@@ -24,7 +24,7 @@ class ValueFormAdd extends Component {
         this._valuesService.postValue(this.state.value)
             .then(x => {
 
-                this.props.closeModalWindow()
+                this.props.closeModalWindowQ()
                 this.props.updateValuesList()
                 .then(() => this.props.setTheUser(x.data.user))
                 

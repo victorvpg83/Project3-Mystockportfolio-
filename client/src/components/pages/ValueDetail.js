@@ -37,6 +37,8 @@ class ValueDetail extends React.Component  {
                 this.setState({
                     valuesR: ValueRating.data.rating
                 })
+
+
             })
             
             .catch(err => console.log("Error", err))

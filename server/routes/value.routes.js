@@ -41,6 +41,7 @@ console.log(req.body)
 router.get('/getAllValues', (req, res) => {
     User.findById(req.user._id)
     .populate("cartera")
+    .populate("registroOP")
         .then(allValues =>{
           res.json(allValues)
         })
@@ -67,6 +68,7 @@ router.post('/close', (req, res) => {
             User.findByIdAndUpdate(req.user._id, {
               $addToSet: { registroOP: theCloseValue._id },
               $pull: {cartera: value._id}}, {new:true})
+              .populate("registroOP")
               .then(user => res.json({theCloseValue,user}))
               .catch(err => console.log(err));
         })

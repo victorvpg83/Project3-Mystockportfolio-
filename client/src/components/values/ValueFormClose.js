@@ -32,7 +32,6 @@ class ValueFormClose extends Component {
 
         this._valuesService.closeValue(this.state.registroOP)
             .then(x => {
-// console.log(x.data)
                 this.props.closeModalWindow()
                 this.props.updateValuesList()
                 this.props.setTheUser(x.data.user)
