@@ -5,7 +5,7 @@ const cors = require('cors')
 
 
 // CORS CONFIG
-const whitelist = ['http://localhost:3000', "*"]
+const whitelist = ['http://localhost:3000']
 const corsOptions = {
     origin: (origin, cb) => {
         const originIsWhitelisted = whitelist.includes(origin)
