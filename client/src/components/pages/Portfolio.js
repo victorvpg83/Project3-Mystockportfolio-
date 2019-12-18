@@ -22,9 +22,7 @@ class Portfolio extends React.Component {
             profitLose: undefined,
         },
             valuesN: [],
-
-            ROp: [] 
-        
+            ROp: [], 
         }
     }
 
@@ -33,8 +31,8 @@ class Portfolio extends React.Component {
     updateValuesList = () => {
         this._service.getAllValues()
             .then(allValuesFromDB =>{
-                console.log(allValuesFromDB.data.registroOP)
                 const copyValues = []
+                const copyRop = []
                 allValuesFromDB.data.cartera.forEach(value => {
                     copyValues.push({
                         BDValue: value.buyPrice,
@@ -42,26 +40,32 @@ class Portfolio extends React.Component {
                         BDQuantity: value.qty,
                         APIPrice: null,
                         bpa: undefined,
-                        plv: undefined,
-                        portValue: undefined,
-                        cash: undefined,
-                        totalValue: undefined,
-                        profitLose: undefined
-
+                        plv: undefined
                     })
 
             })
+            allValuesFromDB.data.registroOP.forEach(value => {
+                copyRop.push({
+                    symbol: value.symbol,
+                    qty: value.qty,
+                    comision: value.comision,
+                    buyPrice: value.buyPrice,
+                    sellPrice: value.sellPrice, 
+                    calcB: undefined,
+                    calcN: undefined
+                })
+
+        })
             
                  this.setState({ 
                      valuesN: copyValues,
-                     ROp:allValuesFromDB.data.registroOP
+                     ROp:copyRop
                 }, () => this.updatePrice(this.state.valuesN))
             })
             .catch(err => console.log("Error", err))
     }
 
     updatePrice = (array) =>{
-        console.log(array)
         const copyArray = [...array.map(elm => {return {...elm}})]
         const promisesArr = copyArray.map(elm => {
 
@@ -76,13 +80,11 @@ class Portfolio extends React.Component {
         })
 
         Promise.all(promisesArr).then((res) => {
-            console.log(res, "respuesta promises")
             this.setState({ valuesN: res }, () => this.bpaCalc())
         }).catch(err => console.log(err, "error de respuesta promises"))
     }
 
     bpaCalc = () => {
-        console.log(this.state.ROp)
         let copyValuesN = [...this.state.valuesN.map(elm => { return { ...elm } })]
 
         let calcValues = copyValuesN.map(value => {
@@ -100,25 +102,31 @@ class Portfolio extends React.Component {
         let totalValue = cash+portValue
         let profitLose = totalValue-this.props.loggedInUser.initI
 
+
         let copyROp =[...this.state.ROp.map(elm => { return { ...elm } })] 
             let calc = copyROp.map(value =>{
                 let calcB = (value.sellPrice-value.buyPrice)* value.qty
-                let calcN = (value.sellPrice-value.buyPrice)* value.qty
+                let calcN = ((value.sellPrice-value.buyPrice)* value.qty)-value.comision
+                value.calcB=calcB.toFixed(2)
+                value.calcN=calcN.toFixed(2)
+                return value
             })
+         
 
         this.setState({
             valuesN: calcValues,
             GlP:{ portValue: portValue.toFixed(2),
             cash: cash.toFixed(2),
             totalValue: totalValue.toFixed(2),
-            profitLose: profitLose.toFixed(2)
-            }
+            profitLose: profitLose.toFixed(2),          
+            },
+            ROp: calc
+            
         })
 
     }
 
         render () {
-            console.log(this.state.ROp)
             return (
                 <Container>
                     <Row>
@@ -137,7 +145,7 @@ class Portfolio extends React.Component {
 
                     <Row>
                         <Col className="table-index" md={12}>
-                            <RegOp setTheUser={this.props.setTheUser} updateValuesList={this.updateValuesList} ROp ={this.state.ROp} />
+                            <RegOp setTheUser={this.props.setTheUser} updateValuesList={this.updateValuesList} ROp ={this.state.ROp}  />
                         </Col>
                     </Row>
                 </Container>

@@ -13,7 +13,10 @@ class ValueDetail extends React.Component  {
         super(props)
         this._service = new Service()
         this.state = {
-            symbol: ''
+            symbol: '',
+            closeValues: [],
+            maxPrice: undefined,
+            minPrice: undefined
 
         }
     }
@@ -27,7 +30,6 @@ class ValueDetail extends React.Component  {
                     values: getProfile.data.profile,
                     symbol: getProfile.data.symbol
                 })
-                console.log (getProfile)
 
             })
             .catch(err => console.log(err))
@@ -42,14 +44,23 @@ class ValueDetail extends React.Component  {
             })
             
             .catch(err => console.log("Error", err))
-        // this._service.getHistoric(this.state.symbol)
-        //     .then(Hist => {
-            
+        this._service.getHistoric(this.state.symbol)
+            .then(Hist => {
+                console.log(Hist.data.historical)
+                let arrayComplet = []
+                let histPrices = Hist.data.historical.map(e =>{
+                    arrayComplet.push({date: e.date, close: e.close})
+                  })
+                let maxPrice =Math.max(...arrayComplet.map(e=>e.close))
+                let minPrice =Math.min(...arrayComplet.map(e=>e.close))
+                this.setState({
+                    closeValues: arrayComplet,
+                    maxPrice:maxPrice,
+                    minPrice:minPrice
+                })
+                console.log(maxPrice)
 
-        //         this.setState({
-        //             valuesR: ValueRating.data.rating
-        //         })
-        //     })
+            })
             
             .catch(err => console.log("Error", err))
 
@@ -62,6 +73,7 @@ class ValueDetail extends React.Component  {
 
 
     render () {
+        console.log(this.state)
         return (
             <Container>
 
@@ -91,7 +103,6 @@ class ValueDetail extends React.Component  {
                                 <h3>{this.state.values.companyName}</h3>
                               <img src={this.state.values.image} ></img>
                                  <p>Símbolo: {this.state.symbol} </p>
-                              {/* <p> {this.state.values.companyName} </p> */}
                               
                               <p> {this.state.values.description} </p>
                               <p> Mercado: {this.state.values.exchange} </p>
@@ -110,6 +121,9 @@ class ValueDetail extends React.Component  {
                                 <p>Rating: {this.state.valuesR.rating} </p>
                                 <h3>Análisis técnico</h3>
                                 <p>Precio: {this.state.values.price} $ </p>
+                                <p><strong>Rango últimos 21 días</strong></p>
+                                <p>Máximo: {this.state.maxPrice} $ </p>
+                                <p>Mínimo: {this.state.minPrice} $ </p>
 
                               </>   :
                               null}

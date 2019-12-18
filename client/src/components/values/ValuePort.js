@@ -40,8 +40,6 @@ class ValuePort extends React.Component {
 
 
     render() {
-        console.log(this.props.values)
-
         return (
             <Container>
 

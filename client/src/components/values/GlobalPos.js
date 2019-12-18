@@ -1,9 +1,8 @@
 import React from 'react'
-import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Table } from 'react-bootstrap'
 import apiService from "../../service/Value_service"
 import Service from "../../service/ValueCreate_service"
 
-import ValueFormAdd from './ValueFormAdd'
 
 
 class GlobalPos extends React.Component {
@@ -20,7 +19,6 @@ class GlobalPos extends React.Component {
     }
 
         render () {
-            console.log(this.props.values)
             return (
                 <Container>
                     <Row className="PosglobalRow">
