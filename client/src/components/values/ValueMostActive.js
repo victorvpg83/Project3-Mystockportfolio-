@@ -18,7 +18,7 @@ class ValueMostActive extends React.Component {
 
     updateMostActive = () => {
         this._service.getMostActive()
-            .then(mostActive => this.setState({values: mostActive.data.mostActiveStock}))
+            .then(mostActive => this.setState({values: mostActive.data.mostActiveStock.slice(0,5)}))
             .catch(err => console.log("Error", err))
     }
 
@@ -28,12 +28,14 @@ class ValueMostActive extends React.Component {
                 <Container>
                 <h3>Valores más activos</h3>
                     <Row>
-                        <Col className="table-index" md={4}>
-                            <Table striped bordered hover size="sm">
+                        <Col className="table-index" md={12}>
+                            <Table className='shadow bckg' striped bordered hover size="sm">
                               <thead>
                                 <tr>
-                                  <th>Ticker</th>
+                                  <th>Símbolo</th>
+                                  <th>Nombre</th>
                                   <th>Precio $</th>
+                                  <th>Variación $</th>
                                   <th>Variación</th>
                                 </tr>
                               </thead>

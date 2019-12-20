@@ -19,22 +19,23 @@ class ValueLosers extends React.Component {
 
     updateLosers = () => {
         this._service.getLoser()
-            .then(Losers => this.setState({values: Losers.data.mostLoserStock}))
+            .then(Losers => this.setState({values: Losers.data.mostLoserStock.slice(0,3)}))
             .catch(err => console.log("Error", err))
     }
 
     render() {
         return (
-            <section>
+            <section className='padding0'>
                 <Container>
-                <h3>Perdedores del día</h3>
                     <Row>
-                        <Col className="table-index" md={4}>
-                            <Table striped bordered hover size="sm">
+                        <Col className="table-index" md={12}>
+                            <Table className='shadow bckg' striped bordered hover size="sm">
                               <thead>
                                 <tr>
-                                  <th>Ticker</th>
+                                  <th>Símbolo</th>
+                                  <th>Nombre</th>
                                   <th>Precio $</th>
+                                  <th>Variación $</th>
                                   <th>Variación</th>
                                 </tr>
                               </thead>

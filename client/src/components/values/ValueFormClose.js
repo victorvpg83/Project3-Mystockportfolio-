@@ -10,15 +10,14 @@ class ValueFormClose extends Component {
 
         this.state = {
             disabledButton: false,
-            buttonText: 'Cerrar posición',
             registroOP: {
-                sellPrice: "",      //viene del formulario
-                comision: "",       //viene del formulario  
-                symbol: this.props.value.BDSymbol, //viene de cartera
-                buyPrice: this.props.value.BDValue,       //viene de cartera
-                qty: this.props.value.BDQuantity,            //viene de cartera
-                bruto: undefined,          //hay que calcularlo
-                neto: undefined,           //hay que calcularlo
+                sellPrice: "",      
+                comision: "",         
+                symbol: this.props.value.BDSymbol, 
+                buyPrice: this.props.value.BDValue,       
+                qty: this.props.value.BDQuantity,            
+                bruto: undefined,          
+                neto: undefined,           
             },
             accion: {
 

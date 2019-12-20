@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Form, Container } from 'react-bootstrap'
+import {Button, Form, Container, Row, Col } from 'react-bootstrap'
 
 import Service from '../../service/Auth_service'
 
@@ -11,7 +11,10 @@ class SignupForm extends Component {
         this.state = {
             username: '',
             password: '',
-            initI: ''
+            initI: '',
+            lastName: '',
+            phone: undefined,
+            direction: ''
         }
     }
 
@@ -20,17 +23,24 @@ class SignupForm extends Component {
         const {
             username,
             password,
-            initI
+            initI,
+            lastName,
+            phone,
+            direction
+            
         } = this.state
 
-        this._service.signup(username, password, initI)
+        this._service.signup(username, password, initI, lastName,phone,direction)
             .then(theNewUser => {
 
                 this.props.setUser(theNewUser.data)
                 this.setState({
                     username: '',
                     password: '',
-                    initI: ''
+                    initI: '',
+                    lastName: '',
+                    phone: '',
+                    direction: ''
                 })
                 this.props.history.push('/') // REDIRECCIONAMIENTO
             })
@@ -52,13 +62,27 @@ class SignupForm extends Component {
     render() {
         return (
             <Container>
-
-                <h1>Registro</h1>
+                <Row>
+                    <Col md={3}></Col>
+                    <Col md={6}>
+                <h1 className='txtS'>Registro</h1>
 
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                         <Form.Label>Usuario</Form.Label>
                         <Form.Control type="text" name="username" onChange={this.handleInputChange} value={this.state.username} />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Nombre y apellidos</Form.Label>
+                        <Form.Control type="text" name="lastName" onChange={this.handleInputChange} value={this.state.lastName} />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Teléfono</Form.Label>
+                        <Form.Control type="number" name="phone" onChange={this.handleInputChange} value={this.state.phone} />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Dirección</Form.Label>
+                        <Form.Control type="text" name="direction" onChange={this.handleInputChange} value={this.state.direction} />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Contraseña</Form.Label>
@@ -70,7 +94,9 @@ class SignupForm extends Component {
                     </Form.Group>
                     <Button variant="dark" type="submit">Registrarme</Button>
                 </Form>
-
+                </Col>
+                <Col md={3}></Col>
+                </Row>
             </Container>
         )
     }

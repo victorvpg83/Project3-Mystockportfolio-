@@ -17,8 +17,9 @@ class ValueProfile extends React.Component {
     componentDidMount = () => this.updateProfileValue()
 
     updateProfileValue = () => {
-        this._service.getProfile()
+        this._service.getProfile(this.state.symbol)
             .then(ValueProfile => {
+                console.log(ValueProfile)
                 this.setState({
                     values: ValueProfile.data.profile,
                     symbol: ValueProfile.data.symbol
@@ -29,6 +30,7 @@ class ValueProfile extends React.Component {
     }
 
     render() {
+        console.log(this.state.values)
         return (
 
             <section>

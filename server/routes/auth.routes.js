@@ -10,7 +10,11 @@ authRoutes.post('/signup', (req, res, next) => {
   const {
     username,
     password,
-    initI
+    initI,
+    lastName,
+    phone,
+    direction
+
   } = req.body
 
   if (!username || !password || !initI) {
@@ -51,7 +55,10 @@ authRoutes.post('/signup', (req, res, next) => {
     const aNewUser = new User({
       username: username,
       password: hashPass,
-      initI: initI
+      initI: initI,
+      lastName: lastName,
+      phone: phone,
+      direction: direction
 
     });
     console.log(aNewUser)

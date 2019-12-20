@@ -51,7 +51,6 @@ class Navigation extends Component {
                     <Navbar.Collapse>
                         <Nav className="mr-auto">
                             <Nav.Link as="li"><Link to="/">Inicio</Link></Nav.Link>
-                            <Nav.Link as="li"><Link to="/coasters">Posición Global</Link></Nav.Link>
                             <Nav.Link as="li"><Link to="/signup">Registro</Link></Nav.Link>
                             <Nav.Link as="li"><Link to="/login">Login</Link></Nav.Link>
                         </Nav>

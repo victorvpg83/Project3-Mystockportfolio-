@@ -3,9 +3,9 @@ import Service from '../../service/Value_service'
 
 import { Container, Row, Table, Col } from 'react-bootstrap'
 
-import ValueCardIndex from './ValueCardIndex'
+import ValueCardSectors from './ValueCardSectors'
 
-class ValueGainers extends React.Component {
+class ValueSectors extends React.Component {
 
     constructor(props) {
         super(props)
@@ -14,14 +14,11 @@ class ValueGainers extends React.Component {
             values: [],
         }
     }
+    componentDidMount = () => this.updateSectors()
 
-    componentDidMount = () => this.updateGainers()
-
-    updateGainers = () => {
-        this._service.getGainer()
-            .then(Gainers =>{
-                console.log(Gainers.data) 
-                this.setState({values: Gainers.data.mostGainerStock.slice(0,3)})})
+    updateSectors = () => {
+        this._service.getSectors()
+            .then(sectors =>this.setState({values: sectors.data.sectorPerformance}))
             .catch(err => console.log("Error", err))
     }
 
@@ -29,20 +26,18 @@ class ValueGainers extends React.Component {
         return (
             <section>
                 <Container>
+                <h3 className='marTop'>Índices sectoriales</h3>
                     <Row>
                         <Col className="table-index" md={12}>
                             <Table className='shadow bckg' striped bordered hover size="sm">
                               <thead>
                                 <tr>
-                                  <th>Símbolo</th>
-                                  <th>Nombre</th>
-                                  <th>Precio $</th>
-                                  <th>Variación $</th>
+                                  <th>Sector</th>
                                   <th>Variación</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.values.map(values => <ValueCardIndex key={values.ticker} {...values} />)}
+                                {this.state.values.map(values => <ValueCardSectors key={values.ticker} {...values} />)}
                               </tbody>
                             </Table>
                         </Col>
@@ -53,5 +48,4 @@ class ValueGainers extends React.Component {
     }
 }
 
-
-export default ValueGainers
+export default ValueSectors

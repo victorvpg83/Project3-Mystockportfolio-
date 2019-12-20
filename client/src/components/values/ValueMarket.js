@@ -17,7 +17,7 @@ class ValueMarkets extends React.Component {
 
     updateMarket = () => {
         this._service.getMarketList()
-            .then(Markets => this.setState({values: Markets.data.symbolsList}))    
+            .then(Markets => this.setState({values: Markets.data.symbolsList.slice(0,26)}))    
             .catch(err => console.log("Error", err))
     }
 
@@ -27,8 +27,8 @@ class ValueMarkets extends React.Component {
                 <Container>
                 <h3>Mercado</h3>
                     <Row>
-                        <Col className="table-index" md={4}>
-                            <Table striped bordered hover size="sm">
+                        <Col className="table-index" md={12}>
+                            <Table className='shadow bckg' striped bordered hover size="sm">
                               <thead>
                                 <tr>
                                   <th>Ticker</th>

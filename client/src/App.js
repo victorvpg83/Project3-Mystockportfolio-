@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+
+
 
 import Service from './service/Auth_service'
 
@@ -19,6 +24,7 @@ import ValueDetail from './components/pages/ValueDetail'
 import Signup from './components/auth/Signup'
 import Login from './components/auth/Login'
 
+am4core.useTheme(am4themes_animated);
 
 
 class App extends Component {

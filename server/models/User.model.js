@@ -7,6 +7,9 @@ const userSchema = new Schema({
   username: String,
   password: String,
   initI: Number,
+  lastName: String,
+  phone: Number,
+  direction: String,
   cartera: [{type: Schema.Types.ObjectId, ref: 'Value'}],
   registroOP: [{type: Schema.Types.ObjectId, ref: 'CloseValue'}]
 }, {

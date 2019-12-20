@@ -3,9 +3,9 @@ import Service from '../../service/Value_service'
 
 import { Container, Row, Table, Col } from 'react-bootstrap'
 
-import ValueCardIndex from './ValueCardIndex'
+import ValueCardIndexes from './ValueCardIndexes'
 
-class ValueGainers extends React.Component {
+class ValueIndexes extends React.Component {
 
     constructor(props) {
         super(props)
@@ -14,14 +14,11 @@ class ValueGainers extends React.Component {
             values: [],
         }
     }
+    componentDidMount = () => this.updateIndexes()
 
-    componentDidMount = () => this.updateGainers()
-
-    updateGainers = () => {
-        this._service.getGainer()
-            .then(Gainers =>{
-                console.log(Gainers.data) 
-                this.setState({values: Gainers.data.mostGainerStock.slice(0,3)})})
+    updateIndexes = () => {
+        this._service.getIndexes()
+            .then(majorIndexes => this.setState({values: majorIndexes.data.majorIndexesList.slice(0,3)}))
             .catch(err => console.log("Error", err))
     }
 
@@ -29,6 +26,7 @@ class ValueGainers extends React.Component {
         return (
             <section>
                 <Container>
+                <h3 className='marTop'>Índices de mercado</h3>
                     <Row>
                         <Col className="table-index" md={12}>
                             <Table className='shadow bckg' striped bordered hover size="sm">
@@ -38,11 +36,10 @@ class ValueGainers extends React.Component {
                                   <th>Nombre</th>
                                   <th>Precio $</th>
                                   <th>Variación $</th>
-                                  <th>Variación</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.values.map(values => <ValueCardIndex key={values.ticker} {...values} />)}
+                                {this.state.values.map(values => <ValueCardIndexes key={values.ticker} {...values} />)}
                               </tbody>
                             </Table>
                         </Col>
@@ -53,5 +50,4 @@ class ValueGainers extends React.Component {
     }
 }
 
-
-export default ValueGainers
+export default ValueIndexes

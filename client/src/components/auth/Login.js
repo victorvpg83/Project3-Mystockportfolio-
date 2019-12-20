@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, Container, Toast } from 'react-bootstrap'
+import { Button, Form, Container, Toast, Col, Row } from 'react-bootstrap'
 
 import Service from '../../service/Auth_service'
 
@@ -45,8 +45,11 @@ class LoginForm extends Component {
     render() {
         return (
             <Container>
-
-                <h1>Iniciar sesión</h1>
+                <Row>
+                <Col md={3}></Col>
+                
+                <Col md={6}>
+                <h1 className='txtS'>Iniciar sesión</h1>
 
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
@@ -77,7 +80,9 @@ class LoginForm extends Component {
                     </Toast.Header>
                     <Toast.Body>{this.state.toastText}</Toast.Body>
                 </Toast>
-
+                </Col>
+                <Col md={3}></Col>
+                </Row>
             </Container >
         )
     }

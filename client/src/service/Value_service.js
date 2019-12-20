@@ -14,7 +14,11 @@ export default class Services {
     getProfile = (value) => this._service.get(`/company/profile/${value}`)
     getRating = (value) => this._service.get(`/company/rating/${value}`)
     getRealTime = (value) => this._service.get(`/stock/real-time-price/${value}`)
-    getHistoric = (value) => this._service.get(`/historical-price-full/${value}?timeseries=21`)
+    getHistoric = (value) => this._service.get(`/historical-price-full/${value}?timeseries=260`)
     getMarketList = () => this._service.get('/company/stock/list')
+    getMarketFest = () => this._service.get('/is-the-market-open')
+    getIndexes = () => this._service.get('/majors-indexes')
+    getSectors = () => this._service.get('/stock/sectors-performance')
+    
 
 }
